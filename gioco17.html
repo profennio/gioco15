@@ -1,0 +1,184 @@
+<html>
+
+<head>
+
+    <title>GIOCO DEL 15</title>
+
+
+    <style>
+        input {
+            background-color: cyan;
+            font-size: larger;
+
+        }
+
+        div#scacchiera {
+            width: 320px;
+            height: 320px;
+            position: relative;
+            margin: 0 auto;
+            border: 2px solid #404040;
+
+
+        }
+
+        body {
+            text-align: center;
+
+
+        }
+    </style>
+    <script>
+        var mosse = 0;
+
+        var statoiniziale = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 0]];
+        var stato = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 0]];
+
+        var dimpulsante = 80;
+        function cliccato(event) {
+
+            childn = parseInt(event.target.id.slice(1, 4), 10)
+
+            mosse += mossa(childn);
+
+            disegna();
+
+            if (finito()) alert("Finito in " + mosse + " mosse");
+        }
+
+
+        function finito() {
+
+            return (statoiniziale.join() == stato.join());
+
+        }
+
+        function mossa(tessera) {
+
+
+            for (var r = 0; r < 4; r++)
+                for (var c = 0; c < 4; c++) { if (stato[r][c] == tessera) { cx = r; cy = c; } if (stato[r][c] == 0) { c0x = r; c0y = c } }
+
+            if (Math.abs(c0x - cx) + Math.abs(c0y - cy) == 1) {
+
+                stato[c0x][c0y] = tessera;
+                stato[cx][cy] = 0;
+                return 1;
+
+            }
+
+            return 0;
+
+        }
+
+
+        function shuffle() {
+
+
+            for (var i = 0; i < 20; i++) {
+
+                tessera = 1 + Math.floor(15 * Math.random());
+
+                mossa(tessera);
+
+
+            }
+
+            disegna();
+
+        }
+
+        function creapulsanti() {
+
+            var scacchiera = document.getElementById("scacchiera")
+
+            scacchiera.style.marginLeft = "auto";
+            scacchiera.style.marginTop = "auto";
+
+
+
+            var i = 0;
+            for (var r = 0; r < 4; r++)
+                for (var c = 0; c < 4; c++) {
+
+                    var nuovonodo = document.createElement("input");
+
+                    nuovonodo.type = "button";
+                    nuovonodo.value = i;
+                    nuovonodo.id = "p" + i;
+                    nuovonodo.onclick = cliccato;
+                    nuovonodo.tag = i
+
+                    nuovonodo.style.position = "absolute";
+                    nuovonodo.style.width = dimpulsante;
+                    nuovonodo.style.height = dimpulsante;
+
+
+                    if (i == 0) nuovonodo.style.visibility = "hidden";
+                    scacchiera.appendChild(nuovonodo);
+
+
+
+                    i++;
+
+
+                }
+
+
+            disegna()
+            // shuffle()
+
+        }
+
+
+        function disegna() {
+
+
+            for (var r = 0; r < 4; r++)
+                for (var c = 0; c < 4; c++) {
+
+                    //	var   r=Math.floor(n/16);
+                    //var  c=n%16;
+
+
+                    tessera = document.getElementById("scacchiera").childNodes[stato[r][c]];
+
+
+                    var posx = dimpulsante * (c);
+                    var posy = dimpulsante * (r);
+                    tessera.style.top = posy + "px";
+                    tessera.style.left = posx + "px";
+
+
+
+                }
+
+
+
+        }
+
+
+
+
+
+      //  var lista = [{ "n": 1, "nome": "Masha", "punti": 30 }, { "n": 2, "nome": "Gigi", "punti": 40 }, { "n": 3, "nome": "Lara", "punti": 50 }, { "n": 4, "nome": "John", "punti": 130 }]
+
+        //console.table(lista)
+       // console.warn("Attento!")
+
+    </script>
+
+
+</head>
+
+
+<body onload="creapulsanti();">
+
+    <div id="scacchiera"></div>
+
+
+</body>
+
+
+
+</html>
